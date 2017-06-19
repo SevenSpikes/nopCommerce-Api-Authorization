@@ -18,7 +18,7 @@ namespace NopCommerce.Api.AdapterLibrary
 
         public object Call(HttpMethods method, string path)
         {
-            return Call(method, path, string.Empty);
+            return Call(method, path, null);
         }
 
         public object Call(HttpMethods method, string path, object callParams)
