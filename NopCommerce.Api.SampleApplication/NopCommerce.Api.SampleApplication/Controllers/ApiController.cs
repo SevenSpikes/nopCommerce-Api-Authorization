@@ -16,7 +16,7 @@ namespace NopCommerce.Api.SampleApplication.Controllers
         [HttpGet]
         public JsonResult Get(string endpoint, string param1, string param2, string param3)
         {
-            return ToJson(GetApiClient().Get(BuildApiUrl(endpoint, param1, param2, param3))); 
+            return ToJson(GetApiClient().Get(BuildApiUrl(endpoint, param1, param2, param3)));
         }
 
         [HttpPost]
@@ -43,7 +43,7 @@ namespace NopCommerce.Api.SampleApplication.Controllers
             // Note: This should not be done in the action! This is only for illustration purposes.
             var accessToken = (Session["accessToken"] ?? TempData["accessToken"] ?? "").ToString();
             var serverUrl = (Session["serverUrl"] ?? TempData["serverUrl"] ?? "").ToString();
-            
+
             return new ApiClient(accessToken, serverUrl);
         }
 
