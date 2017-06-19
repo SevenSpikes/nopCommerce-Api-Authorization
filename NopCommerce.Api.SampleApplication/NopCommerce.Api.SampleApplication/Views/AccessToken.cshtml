@@ -100,4 +100,5 @@
     </div>
 </div>
 
-@Html.RouteLink("Get Customers", "GetCustomers")
+<h4><a href="@( Model.UserAccessModel.ServerUrl + "/swagger/ui/index")">Swagger Documentation</a></h4>
+<h4>@Html.RouteLink("Try Api", "TryApi")</h4>

@@ -1,0 +1,153 @@
+﻿@{
+    Layout = "Layout.cshtml";
+    var customerUrl = Url.RouteUrl("ApiGet", new { endpoint = "customers" });
+    var categoryUrl = Url.RouteUrl("ApiGet", new { endpoint = "categories" });
+    var productUrl = Url.RouteUrl("ApiGet", new { endpoint = "products" });
+    var productCategoryMappingUrl = Url.RouteUrl("ApiGet", new { endpoint = "product_category_mappings" });
+    var orderUrl = Url.RouteUrl("ApiGet", new { endpoint = "orders" });
+    var shoppingCartItemUrl = Url.RouteUrl("ApiGet", new { endpoint = "shopping_cart_items" });
+    var storeUrl = Url.RouteUrl("ApiGet", new { endpoint = "stores" });
+    var webhookUrl = Url.RouteUrl("ApiGet", new { endpoint = "webhooks" });
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+    var indent = 2;
+    $(document)
+        .on('change', '#method', function () {
+            var method = $(this).val();
+            $('.endpoint').hide();
+            $('#endpointsFor' + method).show().trigger('change');
+            if (method === 'GET') {
+                $('#querystring').show();
+            }
+            else {
+                $('#querystring').hide();
+            }
+            if (method === 'GET' || method === 'DELETE') {
+                $('#body').parent().hide();
+                $('#response').val('').parent().css('width', '100%').attr('colspan', 2);
+            }
+            else {
+                $('#body').parent().show();
+                $('#response').val('').parent().css('width', '50%').removeAttr('colspan');
+            }
+        })
+        .on('change', '.endpoint', function () {
+            $('#endpoint').val($(this).val());
+        })
+        .on('blur', '#body', function () {
+            $(this).val(JSON.stringify(JSON.parse($(this).val()), undefined, indent));
+        })
+        .on('click', '#submit-btn', function () {
+            $.ajax({
+                url: $('#endpoint').val() + $('#querystring').val(),
+                type: $('#method').val(),
+                data: {
+                    body: JSON.stringify(JSON.parse($('#body').val() || '{}'))
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $('#response').val(JSON.stringify(data, undefined, indent))
+                },
+                error: function (request, error) {
+                    $('#response').val(JSON.stringify(request, undefined, indent))
+                }
+            });
+        })
+        .ajaxStart(function () {
+            $('#submit-btn').attr('disabled', 'disabled');
+            $('#loading').show();
+        })
+        .ajaxStop(function () {
+            $('#submit-btn').removeAttr('disabled');
+            $('#loading').hide();
+
+        });
+</script>
+
+<table style="width:100%;">
+    <tr>
+        <td>
+            <select id="method">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+            </select>
+            <select id="endpointsForGET" class="endpoint" style="min-width: 250px;">
+                <option value="@customerUrl">Customers</option>
+                <option value="@customerUrl/{id}">Single Customer</option>
+                <option value="@customerUrl/count">Customer Count</option>
+                <option value="@customerUrl/search">Search in Customers</option>
+                <option value="@categoryUrl">Categories</option>
+                <option value="@categoryUrl/{id}">Single Category</option>
+                <option value="@categoryUrl/count">Category Count</option>
+                <option value="@productUrl">Products</option>
+                <option value="@productUrl/{id}">Single Product</option>
+                <option value="@productUrl/count">Product Count</option>
+                <option value="@productCategoryMappingUrl">Mappings</option>
+                <option value="@productCategoryMappingUrl/{id}">Single Mapping</option>
+                <option value="@productCategoryMappingUrl/count">Mapping Count</option>
+                <option value="@orderUrl">Orders</option>
+                <option value="@orderUrl/{id}">Single Order</option>
+                <option value="@orderUrl/count">Order Count</option>
+                <option value="@orderUrl/customer/{customerId}">Orders of a Customer</option>
+                <option value="@orderUrl/{orderId}/items">Items of an Order</option>
+                <option value="@orderUrl/{orderId}/items/{orderItemId}">Single Item of an Order</option>
+                <option value="@orderUrl/{orderId}/items/count">Item Count of an Order</option>
+                <option value="@shoppingCartItemUrl">Shopping Cart Items</option>
+                <option value="@shoppingCartItemUrl/{customerId}">Shopping Cart Items of a Customer</option>
+                <option value="@storeUrl">Stores</option>
+                <option value="@webhookUrl/filters">Webhook Filters</option>
+                <option value="@webhookUrl/registrations">Webhook Registrations</option>
+                <option value="@webhookUrl/registrations/{id}">Single Webhook Registration</option>
+            </select>
+            <select id="endpointsForPOST" class="endpoint" style="display:none;min-width: 250px;">
+                <option value="@customerUrl">Customers</option>
+                <option value="@categoryUrl">Categories</option>
+                <option value="@productUrl">Products</option>
+                <option value="@productCategoryMappingUrl">Mappings</option>
+                <option value="@orderUrl">Orders</option>
+                <option value="@orderUrl/{orderId}/items">Items of an Order</option>
+                <option value="@shoppingCartItemUrl">Shopping Cart Items</option>
+                <option value="@webhookUrl/registrations">Webhook Registrations</option>
+            </select>
+            <select id="endpointsForPUT" class="endpoint" style="display:none;min-width: 250px;">
+                <option value="@customerUrl/{id}">Customer</option>
+                <option value="@categoryUrl/{id}">Category</option>
+                <option value="@productUrl/{id}">Product</option>
+                <option value="@productCategoryMappingUrl/{id}">Mapping</option>
+                <option value="@orderUrl/{id}">Order</option>
+                <option value="@orderUrl/{orderId}/items/{orderItemId}">Item of an Order</option>
+                <option value="@shoppingCartItemUrl/{id}">Shopping Cart</option>
+                <option value="@webhookUrl/registrations/{id}">Webhook Registration</option>
+            </select>
+            <select id="endpointsForDELETE" class="endpoint" style="display:none;min-width: 250px;">
+                <option value="@customerUrl/{id}">Customer</option>
+                <option value="@categoryUrl/{id}">Category</option>
+                <option value="@productUrl/{id}">Product</option>
+                <option value="@productCategoryMappingUrl/{id}">Mapping</option>
+                <option value="@orderUrl/{id}">Order</option>
+                <option value="@orderUrl/{orderId}/items">Items of an Order</option>
+                <option value="@orderUrl/{orderId}/items/{orderItemId}">Single Item of an Order</option>
+                <option value="@shoppingCartItemUrl/{id}">Shopping Cart</option>
+                <option value="@webhookUrl/registrations">Webhook Registrations</option>
+                <option value="@webhookUrl/registrations/{id}">Webhook Registration</option>
+            </select>
+        <td>
+    <tr>
+        <td style="width:50%;"><input id="endpoint" type="text" value="@customerUrl" style="width:100%" /></td>
+        <td style="width:50%;"><input id="querystring" type="text" placeholder="?querystring (optional)" style="width:100%" /></td>
+    </tr>
+    <tr>
+        <td style="width:50%;display:none"><textarea id="body" placeholder="body (json)" spellcheck="false" style="width:100%;height:400px"></textarea></td>
+        <td style="width:100%;" colspan="2"><textarea id="response"  placeholder="response" spellcheck="false" style="width:100%;height:400px"></textarea></td>
+    </tr>
+    <tr>
+        <td>
+            <button type="button" id="submit-btn">Submit</button>
+            <span id="loading" style="display:none">Loading</span>
+        </td>
+    </tr>
+</table>
