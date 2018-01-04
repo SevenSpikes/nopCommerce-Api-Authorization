@@ -14,7 +14,7 @@ namespace NopCommerce.Api.SampleApplication
                url: "submit",
                defaults: new { controller = "Authorization", action = "Submit" },
                namespaces: new string[] { "NopCommerce.Api.SampleApplication.Controllers" }
-           );
+            );
 
             routes.MapRoute(
                name: "GetAccessToken",
@@ -42,6 +42,77 @@ namespace NopCommerce.Api.SampleApplication
                url: "updatecustomer/{customerId}",
                defaults: new { controller = "Customers", action = "UpdateCustomer", customerId = UrlParameter.Optional },
                namespaces: new string[] { "NopCommerce.Api.SampleApplication.Controllers" }
+            );
+
+            routes.MapRoute(
+               name: "TryApi",
+               url: "try-api",
+               defaults: new { controller = "Api", action = "TryApi", id = UrlParameter.Optional },
+               namespaces: new string[] { "NopCommerce.Api.SampleApplication.Controllers" }
+            );
+
+            routes.MapRoute(
+              name: "ApiGet",
+              url: "api/{endpoint}/{param1}/{param2}/{param3}",
+              defaults: new
+              {
+                  controller = "Api",
+                  action = "Get",
+                  endpoint = "",
+                  param1 = UrlParameter.Optional,
+                  param2 = UrlParameter.Optional,
+                  param3 = UrlParameter.Optional
+              },
+              namespaces: new string[] { "NopCommerce.Api.SampleApplication.Controllers" },
+              constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+            );
+
+            routes.MapRoute(
+                name: "ApiPost",
+                url: "api/{endpoint}/{param1}/{param2}/{param3}",
+                defaults: new
+                {
+                    controller = "Api",
+                    action = "Post",
+                    endpoint = "",
+                    param1 = UrlParameter.Optional,
+                    param2 = UrlParameter.Optional,
+                    param3 = UrlParameter.Optional
+                },
+                namespaces: new string[] { "NopCommerce.Api.SampleApplication.Controllers" },
+                constraints: new { httpMethod = new HttpMethodConstraint("POST") }
+            );
+
+            routes.MapRoute(
+               name: "ApiPut",
+               url: "api/{endpoint}/{param1}/{param2}/{param3}",
+               defaults: new
+               {
+                   controller = "Api",
+                   action = "Put",
+                   endpoint = "",
+                   param1 = UrlParameter.Optional,
+                   param2 = UrlParameter.Optional,
+                   param3 = UrlParameter.Optional
+               },
+               namespaces: new string[] { "NopCommerce.Api.SampleApplication.Controllers" },
+               constraints: new { httpMethod = new HttpMethodConstraint("PUT") }
+            );
+
+            routes.MapRoute(
+               name: "ApiDelete",
+               url: "api/{endpoint}/{param1}/{param2}/{param3}",
+               defaults: new
+               {
+                   controller = "Api",
+                   action = "Delete",
+                   endpoint = "",
+                   param1 = UrlParameter.Optional,
+                   param2 = UrlParameter.Optional,
+                   param3 = UrlParameter.Optional
+               },
+               namespaces: new string[] { "NopCommerce.Api.SampleApplication.Controllers" },
+               constraints: new { httpMethod = new HttpMethodConstraint("DELETE") }
             );
 
             routes.MapRoute(
