@@ -1,6 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System;
 
 namespace NopCommerce.Api.AdapterLibrary
 {
@@ -23,7 +24,7 @@ namespace NopCommerce.Api.AdapterLibrary
 
         public object Call(HttpMethods method, string path, object callParams)
         {
-            string requestUriString = string.Format("{0}/{1}", _serverUrl, path);
+            string requestUriString = new System.Uri(new System.Uri(_serverUrl), path).ToString();
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(requestUriString);
 
